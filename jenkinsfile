@@ -1,0 +1,80 @@
+pipeline {
+    agent {
+        docker {
+            image 'ubuntu:latest'
+        }
+    }
+
+    environment {
+        CONTAINER_NAME = "website_container"
+        IMAGE_NAME = "website_image"
+        PORT = "82"
+    }
+
+    stages {
+        stage('Checkout Code') {
+            steps {
+                // Clone the GitHub repository
+                git branch: '*/master', url: 'https://github.com/hshar/website.git'
+            }
+        }
+
+        stage('Build Docker Image') {
+            steps {
+                script {
+                    // Stop and remove existing container if running
+                    sh """
+                    if [ \$(docker ps -aq -f name=\$CONTAINER_NAME) ]; then
+                        docker stop \$CONTAINER_NAME
+                        docker rm \$CONTAINER_NAME
+                    fi
+                    """
+
+                    // Build Docker image
+                    sh """
+                    docker build -t my_image .
+                    """
+                }
+            }
+        }
+
+        stage('Publish to Port 82 (Master Only)') {
+            when {
+                branch 'master'
+            }
+            steps {
+                script {
+                    // Run Docker container and publish to port 82
+                    sh """
+                    docker run -d -p \$PORT:80 --name C1 my_image
+                    """
+                }
+            }
+        }
+
+        stage('Build Only (Develop Branch)') {
+            when {
+                branch 'develop'
+            }
+            steps {
+                script {
+                    // Build the Docker image but do not publish
+                    sh """
+                    echo "Build successful, but not publishing for develop branch"
+                    """
+                }
+            }
+        }
+    }
+
+    post {
+        always {
+            script {
+                // Clean up old Docker images and containers
+                sh """
+                docker system prune -f
+                """
+            }
+        }
+    }
+}
