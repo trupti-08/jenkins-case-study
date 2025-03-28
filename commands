@@ -1,0 +1,39 @@
+**System setup commands to install jenkins, java and docker **
+[System_setup_Commands]()
+
+**Git Repository clone**
+
+- git clone https://github.com/hshar/website.git
+
+- cd website
+
+**Create and verify dockerfile**
+
+- nano Dockerfile
+
+- cat Dockerfile
+
+** Manual Docker Build & Run (Optional Test)**
+
+- docker stop website_container
+
+- docker rm website_container
+
+- docker build -t website_image .
+
+- docker run -d -p 82:80 --name website_container website_image
+
+** Clean Up Docker Containers & Images**
+
+- docker stop website_container
+
+- docker rm website_container
+
+- docker rmi website_image
+
+- docker system prune -f
+
+** Accesss website**
+
+http://<jenkins_server_ip>:82
+
