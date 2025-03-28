@@ -1,5 +1,5 @@
 //System setup commands to install jenkins, java and docker
-[System_setup_Commands](system_setup.sh)
+refer the file - system_setup.sh
 
 //Git Repository clone**
 
