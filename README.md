@@ -44,6 +44,7 @@ Firewall allows port 82
 ✅ Enable Webhook in GitHub
 
 **Step 10:** Test the Pipeline
+
 🔥 Test Case 1: Push to Master
 Make a commit to the master branch.
 
@@ -65,4 +66,5 @@ The pipeline should:
 
 
 **Step 11:** Access the Published Website
+
 After pushing code to the master branch, open: http://<jenkins_server_ip>:82
